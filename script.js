@@ -441,6 +441,7 @@ const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
 const playAgainBtn = document.getElementById("playAgainBtn");
 const nextBtn = document.getElementById("nextBtn");
+const reportBtn = document.getElementById("reportBtn");
 const downloadReportBtn = document.getElementById("downloadReportBtn");
 const printReportBtn = document.getElementById("printReportBtn");
 
@@ -462,6 +463,7 @@ const finalMessage = document.getElementById("finalMessage");
 const finalScore = document.getElementById("finalScore");
 const finalCorrect = document.getElementById("finalCorrect");
 const finalWrong = document.getElementById("finalWrong");
+const finalReported = document.getElementById("finalReported");
 const finalAccuracy = document.getElementById("finalAccuracy");
 const finalXP = document.getElementById("finalXP");
 const bestStreak = document.getElementById("bestStreak");
@@ -473,6 +475,7 @@ let state = {
   score: 0,
   correctCount: 0,
   wrongCount: 0,
+  reportedCount: 0,
   xp: 0,
   streak: 0,
   maxStreak: 0,
@@ -485,7 +488,12 @@ let state = {
   negativeEnabled: true,
   negativeValue: 0.25,
   answersLog: [],
+  usedQuestionIds: new Set(),
 };
+
+QUESTION_BANK.forEach((question, index) => {
+  question.id = `q${index + 1}`;
+});
 
 function shuffle(array) {
   const copy = [...array];
@@ -527,6 +535,7 @@ function resetState() {
     score: 0,
     correctCount: 0,
     wrongCount: 0,
+    reportedCount: 0,
     xp: 0,
     streak: 0,
     maxStreak: 0,
@@ -539,7 +548,12 @@ function resetState() {
     negativeEnabled,
     negativeValue,
     answersLog: [],
+    usedQuestionIds: new Set(),
   };
+
+  state.selectedQuestions.forEach((question) => {
+    state.usedQuestionIds.add(question.id);
+  });
 }
 
 function showScreen(name) {
@@ -598,10 +612,22 @@ function startTimer() {
   }, 1000);
 }
 
+function getReplacementQuestion() {
+  const availableQuestions = QUESTION_BANK.filter((question) => !state.usedQuestionIds.has(question.id));
+  if (availableQuestions.length === 0) {
+    return null;
+  }
+
+  const replacement = shuffle(availableQuestions)[0];
+  state.usedQuestionIds.add(replacement.id);
+  return replacement;
+}
+
 function renderQuestion() {
   const current = state.selectedQuestions[state.index];
   state.answered = false;
   nextBtn.disabled = true;
+  reportBtn.disabled = false;
   feedback.textContent = "";
   feedback.className = "feedback";
 
@@ -637,6 +663,7 @@ function handleAnswer(selectedIndex, isTimeout = false) {
   const current = state.selectedQuestions[state.index];
   const isCorrect = selectedIndex === current.answer;
   state.answered = true;
+  reportBtn.disabled = true;
   stopTimer();
 
   const elapsedMs = state.questionStartTime ? Date.now() - state.questionStartTime : 0;
@@ -706,6 +733,7 @@ function showResults() {
   finalScore.textContent = `${state.score.toFixed(2)} / ${QUIZ_LENGTH}`;
   finalCorrect.textContent = `${state.correctCount}`;
   finalWrong.textContent = `${state.wrongCount}`;
+  finalReported.textContent = `${state.reportedCount}`;
   finalAccuracy.textContent = `${accuracy}%`;
   finalXP.textContent = `${state.xp}`;
   bestStreak.textContent = `${state.maxStreak}`;
@@ -720,6 +748,40 @@ function showResults() {
   }
 
   showScreen("result");
+}
+
+function reportOutOfSyllabus() {
+  if (state.answered) {
+    return;
+  }
+
+  const current = state.selectedQuestions[state.index];
+  const replacement = getReplacementQuestion();
+
+  if (!replacement) {
+    feedback.textContent = "No replacement questions are left in the bank.";
+    feedback.className = "feedback bad";
+    reportBtn.disabled = true;
+    return;
+  }
+
+  stopTimer();
+  state.reportedCount += 1;
+  state.answersLog.push({
+    questionNo: state.index + 1,
+    topic: current.topic,
+    question: current.question,
+    selected: "Reported out of syllabus",
+    correct: current.options[current.answer],
+    result: "Reported",
+    timeTakenSec: 0,
+    scoreAfter: state.score.toFixed(2),
+  });
+
+  state.selectedQuestions[state.index] = replacement;
+  feedback.textContent = "Question reported. A new question has been loaded.";
+  feedback.className = "feedback good";
+  renderQuestion();
 }
 
 function escapeCsv(value) {
@@ -790,6 +852,7 @@ restartBtn.addEventListener("click", () => {
   showScreen("start");
 });
 nextBtn.addEventListener("click", nextQuestion);
+reportBtn.addEventListener("click", reportOutOfSyllabus);
 downloadReportBtn.addEventListener("click", downloadReportCsv);
 printReportBtn.addEventListener("click", () => window.print());
 timerModeInput.addEventListener("change", updateModeInputs);
