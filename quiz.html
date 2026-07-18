@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Module 1 Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Sora:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="quiz-shell">
+      <section class="quiz-card">
+        <p class="tag">Module 1 Quiz Challenge</p>
+        <h1>Machine Learning Foundations</h1>
+        <p class="home-copy">
+          Randomly selected 25 questions from a 50-question bank. Use Skip if a question is out of scope and a
+          replacement question will appear.
+        </p>
+
+        <div class="quiz-topbar">
+          <p id="progressText" class="status-text">Question 1 of 25</p>
+          <p id="scoreText" class="status-text">Score: 0</p>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+
+        <section class="question-card" aria-live="polite">
+          <p id="questionTag" class="tag">Q1</p>
+          <h2 id="questionText">Loading question...</h2>
+          <form id="quizForm" class="quiz-options"></form>
+        </section>
+
+        <div class="form-actions">
+          <button id="submitAnswerBtn" class="btn submit-btn" type="button">Submit Answer</button>
+          <button id="skipQuestionBtn" class="btn reset-btn" type="button">Skip (Out of Scope)</button>
+          <a class="btn home-btn" href="index.html">Home</a>
+        </div>
+
+        <p id="feedbackText" class="status-text">Select an option and submit your answer.</p>
+      </section>
+
+      <section class="results-card gamification-card">
+        <div class="results-head">
+          <h2>Gamification Panel</h2>
+          <p id="levelText">Level 1</p>
+        </div>
+
+        <div class="gamification-grid">
+          <article>
+            <p class="bar-label">XP</p>
+            <p id="xpText" class="bar-value">0</p>
+          </article>
+          <article>
+            <p class="bar-label">Current Streak</p>
+            <p id="streakText" class="bar-value">0</p>
+          </article>
+          <article>
+            <p class="bar-label">Best Streak</p>
+            <p id="bestStreakText" class="bar-value">0</p>
+          </article>
+          <article>
+            <p class="bar-label">Skipped</p>
+            <p id="skippedText" class="bar-value">0</p>
+          </article>
+        </div>
+
+        <h2 class="badge-title">Badges</h2>
+        <div id="badgesWrap" class="badge-wrap">
+          <p class="status-text">No badges yet. Keep going.</p>
+        </div>
+
+        <div id="finalResult" class="final-result" hidden>
+          <h2>Quiz Complete</h2>
+          <p id="finalScoreText" class="result-message"></p>
+          <p id="finalSummaryText" class="status-text"></p>
+          <h2 class="badge-title">Your Submissions and Feedback</h2>
+          <div id="submissionReview" class="submission-review"></div>
+          <button id="restartQuizBtn" class="btn submit-btn" type="button">Restart Quiz</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="quiz.js"></script>
+  </body>
+</html>

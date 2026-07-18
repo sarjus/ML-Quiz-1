@@ -3,153 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ML Arena Quiz</title>
+    <title>ML Arena</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Sora:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
-
-    <main class="app-shell">
-      <header class="top-bar card">
-        <div>
-          <p class="eyebrow">Machine Learning Challenge</p>
-          <h1>ML Arena</h1>
-        </div>
-        <button id="restartBtn" class="btn ghost" type="button" aria-label="Restart quiz">
-          Restart
-        </button>
-      </header>
-
-      <section id="startScreen" class="card center-panel">
-        <h2>Battle Through 25 Random Questions</h2>
-        <p>
-          Question pool: 50 | Topics: ML vs Traditional Programming, Learning Paradigms,
-          MLE/MAP/Bayesian, Feature Representation, Loss & Optimization, and Linear Regression.
+    <main class="home-shell">
+      <section class="home-card">
+        <p class="tag">Machine Learning Quiz</p>
+        <h1>ML Arena</h1>
+        <p class="home-copy">
+          Explore the topics below, then open the quiz page to attempt a 25-question random challenge from a
+          50-question bank.
         </p>
-        <div class="setup-grid">
-          <label class="setup-item" for="timerMode">
-            <span>Timer Mode</span>
-            <input id="timerMode" type="checkbox" checked />
-          </label>
-          <label class="setup-item" for="timerSeconds">
-            <span>Seconds per Question</span>
-            <input id="timerSeconds" type="number" min="10" max="120" step="5" value="25" />
-          </label>
-          <label class="setup-item" for="negativeMode">
-            <span>Negative Marking</span>
-            <input id="negativeMode" type="checkbox" checked />
-          </label>
-          <label class="setup-item" for="negativeValue">
-            <span>Penalty per Wrong</span>
-            <input id="negativeValue" type="number" min="0.1" max="1" step="0.05" value="0.25" />
-          </label>
-        </div>
-        <div class="start-meta">
-          <span>+10 XP for correct</span>
-          <span>Streak bonus enabled</span>
-          <span>Badge at 80%+</span>
-        </div>
-        <button id="startBtn" class="btn primary" type="button">Start Quiz</button>
-      </section>
 
-      <section id="quizScreen" class="hidden">
-        <div class="stats-grid">
-          <article class="card stat">
-            <p class="label">Question</p>
-            <p id="questionCounter" class="value">1 / 25</p>
+        <section class="module-topics" aria-label="Module 1 topics">
+          <article class="topic-card">
+            <h2>Introduction to ML</h2>
+            <ul>
+              <li>Machine Learning vs. Traditional Programming</li>
+              <li>Learning Paradigms: supervised, semi-supervised, unsupervised, reinforcement learning</li>
+            </ul>
           </article>
-          <article class="card stat">
-            <p class="label">Score</p>
-            <p id="scoreValue" class="value">0</p>
-          </article>
-          <article class="card stat">
-            <p class="label">XP</p>
-            <p id="xpValue" class="value">0</p>
-          </article>
-          <article class="card stat">
-            <p class="label">Streak</p>
-            <p id="streakValue" class="value">0</p>
-          </article>
-          <article class="card stat">
-            <p class="label">Timer</p>
-            <p id="timerValue" class="value">25s</p>
-          </article>
-        </div>
 
-        <div class="card progress-wrap">
-          <div class="progress-row">
-            <span>Level <strong id="levelValue">1</strong></span>
-            <span><strong id="progressPercent">0%</strong> Complete</span>
-          </div>
-          <div class="progress-track">
-            <div id="progressBar" class="progress-fill"></div>
-          </div>
-        </div>
+          <article class="topic-card">
+            <h2>Parameter Estimation</h2>
+            <ul>
+              <li>Maximum Likelihood Estimation (MLE)</li>
+              <li>Maximum A Posteriori (MAP)</li>
+              <li>Bayesian formulation and posterior reasoning</li>
+            </ul>
+          </article>
 
-        <section class="card question-card" aria-live="polite">
-          <p id="topicTag" class="topic-tag">Topic</p>
-          <h2 id="questionText">Question text</h2>
-          <div id="optionsContainer" class="options"></div>
-          <p id="feedback" class="feedback"></p>
-          <div class="actions">
-            <button id="reportBtn" class="btn ghost" type="button">Report Out of Syllabus</button>
-            <button id="nextBtn" class="btn primary" type="button" disabled>Next</button>
-          </div>
+          <article class="topic-card">
+            <h2>Supervised Learning Foundations</h2>
+            <ul>
+              <li>Feature Representation and Problem Formulation</li>
+              <li>Role of loss functions and optimization</li>
+            </ul>
+          </article>
+
+          <article class="topic-card">
+            <h2>Regression</h2>
+            <ul>
+              <li>Linear regression with one variable</li>
+              <li>Linear regression with multiple variables</li>
+              <li>Solution using gradient descent and matrix method</li>
+            </ul>
+          </article>
         </section>
-      </section>
 
-      <section id="resultScreen" class="card center-panel hidden">
-        <h2>Challenge Complete</h2>
-        <p id="finalMessage" class="result-message"></p>
-        <div class="result-grid">
-          <article>
-            <p class="label">Final Score</p>
-            <p id="finalScore" class="value">0 / 25</p>
-          </article>
-          <article>
-            <p class="label">Correct</p>
-            <p id="finalCorrect" class="value">0</p>
-          </article>
-          <article>
-            <p class="label">Wrong / Timeout</p>
-            <p id="finalWrong" class="value">0</p>
-          </article>
-          <article>
-            <p class="label">Reported</p>
-            <p id="finalReported" class="value">0</p>
-          </article>
-          <article>
-            <p class="label">Accuracy</p>
-            <p id="finalAccuracy" class="value">0%</p>
-          </article>
-          <article>
-            <p class="label">Total XP</p>
-            <p id="finalXP" class="value">0</p>
-          </article>
-          <article>
-            <p class="label">Best Streak</p>
-            <p id="bestStreak" class="value">0</p>
-          </article>
-          <article>
-            <p class="label">Badge</p>
-            <p id="badgeValue" class="value">None</p>
-          </article>
-        </div>
-        <div class="report-actions">
-          <button id="downloadReportBtn" class="btn ghost" type="button">Download CSV Report</button>
-          <button id="printReportBtn" class="btn ghost" type="button">Print / Save PDF</button>
-          <button id="playAgainBtn" class="btn primary" type="button">Play Again</button>
+        <div class="home-actions">
+          <a class="home-link" href="quiz.html">Start Module 1 Quiz</a>
         </div>
       </section>
     </main>
-
-    <script src="script.js"></script>
   </body>
 </html>
