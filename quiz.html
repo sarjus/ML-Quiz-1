@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header class="site-nav" aria-label="Primary">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav">Menu</button>
+      <nav id="primaryNav" class="nav-links">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="quiz.html" aria-current="page">Module 1 Quiz</a>
+        <a class="nav-link" href="quiz-module2.html">Module 2 Quiz</a>
+        <a class="nav-link" href="crossword-module2.html">Module 2 Crossword</a>
+      </nav>
+    </header>
+
     <main class="quiz-shell">
       <section class="quiz-card">
         <p class="tag">Module 1 Quiz Challenge</p>
@@ -86,6 +96,14 @@
       </section>
     </main>
 
+    <footer class="site-footer">
+      <p>
+        Copyright @ Prof. Sarju S,
+        <a href="https://techyprofessor.in/" target="_blank" rel="noopener noreferrer">https://techyprofessor.in/</a>
+      </p>
+    </footer>
+
+    <script src="nav-menu.js"></script>
     <script src="quiz.js"></script>
   </body>
 </html>

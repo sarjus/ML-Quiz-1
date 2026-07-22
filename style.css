@@ -1,18 +1,142 @@
 :root {
-  --bg-1: #08121d;
-  --bg-2: #12253a;
-  --panel: rgba(7, 21, 35, 0.86);
-  --panel-border: rgba(167, 223, 255, 0.22);
-  --text: #f2fbff;
-  --muted: #a9c8de;
-  --yes: #2ee59d;
-  --maybe: #ffc857;
-  --button: #18a1ff;
-  --button-hover: #0787de;
+  --bg-1: #f8f9fa;
+  --bg-2: #eef3f8;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-border: rgba(60, 64, 67, 0.16);
+  --panel-soft: rgba(248, 249, 250, 0.9);
+  --text: #202124;
+  --muted: #5f6368;
+  --yes: #34a853;
+  --maybe: #fbbc05;
+  --button: #4285f4;
+  --button-hover: #1a73e8;
+  --focus: #1a73e8;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.site-nav {
+  width: min(1080px, 92vw);
+  margin: 1rem auto 0.55rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(66, 133, 244, 0.28);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(26, 115, 232, 0.08);
+}
+
+.nav-toggle {
+  display: none;
+  border: 1px solid rgba(66, 133, 244, 0.36);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1a73e8;
+  font-family: "Sora", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.45rem 0.78rem;
+  cursor: pointer;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  text-decoration: none;
+  padding: 0.45rem 0.78rem;
+  border-radius: 999px;
+  border: 1px solid rgba(66, 133, 244, 0.26);
+  background: #ffffff;
+  color: #1a73e8;
+  font-family: "Sora", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.nav-link:hover {
+  background: rgba(66, 133, 244, 0.12);
+  border-color: rgba(26, 115, 232, 0.48);
+  transform: translateY(-1px);
+}
+
+.nav-link[aria-current="page"] {
+  color: #ffffff;
+  background: linear-gradient(100deg, #4285f4, #1a73e8);
+  border-color: rgba(26, 115, 232, 0.72);
+}
+
+@media (max-width: 760px) {
+  .site-nav {
+    padding: 0.58rem;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 0.48rem;
+  }
+
+  .nav-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 240ms ease, opacity 200ms ease;
+    pointer-events: none;
+  }
+
+  .site-nav.is-open .nav-links {
+    max-height: 320px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.site-footer {
+  width: min(1080px, 92vw);
+  margin: 0.85rem auto 1.15rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(66, 133, 244, 0.24);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 16px rgba(26, 115, 232, 0.07);
+}
+
+.site-footer p {
+  margin: 0;
+  color: #5f6368;
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.site-footer a {
+  color: #1a73e8;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
 }
 
 body {
@@ -20,9 +144,179 @@ body {
   min-height: 100vh;
   font-family: "Outfit", sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at 8% 5%, #305779 0%, transparent 30%),
-    radial-gradient(circle at 90% 10%, #214d4b 0%, transparent 24%),
+  background: radial-gradient(circle at 8% 5%, rgba(66, 133, 244, 0.16) 0%, transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(52, 168, 83, 0.14) 0%, transparent 26%),
+    radial-gradient(circle at 76% 74%, rgba(251, 188, 5, 0.14) 0%, transparent 30%),
     linear-gradient(125deg, var(--bg-1), var(--bg-2));
+  background-attachment: fixed;
+}
+
+/* Google Search-inspired theme override */
+.poll-card,
+.results-card,
+.quiz-card,
+.home-card {
+  background: var(--panel);
+  border-color: var(--panel-border);
+  box-shadow: 0 10px 28px rgba(60, 64, 67, 0.16);
+}
+
+.tag,
+.quiz-topbar .status-text,
+.room-chip,
+.badge-pill {
+  color: #1a73e8;
+  border-color: rgba(26, 115, 232, 0.24);
+  background: rgba(66, 133, 244, 0.08);
+}
+
+.home-copy,
+.status-text,
+.review-topic,
+.submission-time,
+#totalCount,
+.clue-item,
+.clue-btn span {
+  color: var(--muted);
+}
+
+.topic-card,
+.quick-stats article,
+.gamification-grid article,
+.result-grid article,
+.question-card,
+.review-item,
+.submission-item,
+.bar-track,
+.progress-track,
+.clue-btn,
+.cw-cell,
+.student-input,
+.option,
+.quiz-option {
+  border-color: rgba(60, 64, 67, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.review-title,
+.review-line,
+.submission-title,
+.submission-answer,
+.bar-label,
+.bar-value,
+.student-field,
+.option span,
+.clue-btn,
+.cw-input {
+  color: var(--text);
+}
+
+.submit-btn {
+  background: var(--button);
+  color: #ffffff;
+}
+
+.submit-btn:hover {
+  background: var(--button-hover);
+}
+
+.reset-btn,
+.home-btn {
+  background: rgba(60, 64, 67, 0.1);
+  color: var(--text);
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #4285f4 0%, #ea4335 35%, #fbbc05 68%, #34a853 100%);
+}
+
+.yes-bar {
+  background: linear-gradient(90deg, #1e8e3e, #34a853);
+}
+
+.maybe-bar {
+  background: linear-gradient(90deg, #f29900, #fbbc05);
+}
+
+.result-message {
+  color: #1a73e8;
+}
+
+.crossword-card,
+.crossword-sidecard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(248, 249, 250, 0.97));
+  border-color: rgba(60, 64, 67, 0.2);
+}
+
+.crossword-grid {
+  background: rgba(66, 133, 244, 0.09);
+  border-color: rgba(66, 133, 244, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(66, 133, 244, 0.2);
+}
+
+.crossword-grid:empty::before {
+  color: #5f6368;
+}
+
+.cw-cell.blocked {
+  background: #dfe3e8;
+}
+
+.cw-input {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.cw-number {
+  color: #1a73e8;
+}
+
+.cw-input:focus {
+  outline-color: #1a73e8;
+  background: rgba(66, 133, 244, 0.14);
+}
+
+.cw-input.is-active {
+  background: rgba(66, 133, 244, 0.12);
+}
+
+.cw-input.hinted,
+.cw-cell.entry-fixed {
+  background: rgba(251, 188, 5, 0.18);
+}
+
+.cw-input.is-wrong,
+.quiz-option.is-wrong {
+  border-color: rgba(234, 67, 53, 0.55);
+  background: rgba(234, 67, 53, 0.12);
+}
+
+.quiz-option.is-correct,
+.review-correct {
+  border-color: rgba(52, 168, 83, 0.55);
+  background: rgba(52, 168, 83, 0.12);
+}
+
+.review-incorrect {
+  border-color: rgba(234, 67, 53, 0.5);
+}
+
+.review-skipped {
+  border-color: rgba(251, 188, 5, 0.58);
+}
+
+.crossword-clues,
+.final-result {
+  border-top-color: rgba(60, 64, 67, 0.2);
+}
+
+.clue-btn:hover {
+  border-color: rgba(26, 115, 232, 0.45);
+  background: rgba(66, 133, 244, 0.1);
+}
+
+.clue-btn.is-active {
+  border-color: rgba(52, 168, 83, 0.65);
+  background: rgba(52, 168, 83, 0.14);
 }
 
 h1,
@@ -119,10 +413,11 @@ p {
 
 .quiz-shell {
   width: min(1080px, 92vw);
-  margin: 2rem auto;
+  margin: 1.6rem auto 2.2rem;
   display: grid;
   gap: 1rem;
   grid-template-columns: 1.4fr 1fr;
+  align-items: start;
 }
 
 .poll-card,
@@ -177,7 +472,7 @@ p {
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 18px;
-  padding: 1.25rem;
+  padding: 1.35rem;
   backdrop-filter: blur(6px);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
 }
@@ -188,6 +483,15 @@ p {
   justify-content: space-between;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+.quiz-topbar .status-text {
+  margin-top: 0;
+  padding: 0.32rem 0.62rem;
+  border: 1px solid rgba(214, 239, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #d9efff;
 }
 
 .progress-track {
@@ -415,10 +719,20 @@ h1 {
 .btn {
   border: 0;
   border-radius: 10px;
-  padding: 0.58rem 1rem;
+  padding: 0.64rem 1.02rem;
   font-weight: 700;
   font-family: "Sora", sans-serif;
   cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .submit-btn {
@@ -598,6 +912,188 @@ body.presenter-mode .results-card {
   color: #f4e6c0;
 }
 
+.crossword-shell {
+  grid-template-columns: 1.55fr 1fr;
+  gap: 1.1rem;
+}
+
+.crossword-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(8, 28, 45, 0.93), rgba(6, 20, 33, 0.9));
+  border-color: rgba(167, 223, 255, 0.28);
+}
+
+.crossword-sidecard {
+  background: linear-gradient(180deg, rgba(7, 22, 36, 0.93), rgba(6, 20, 32, 0.9));
+  border-color: rgba(167, 223, 255, 0.25);
+}
+
+.crossword-progress {
+  margin-top: 0.8rem;
+}
+
+.crossword-grid {
+  margin-top: 0.95rem;
+  display: grid;
+  gap: 3px;
+  background: rgba(157, 215, 253, 0.12);
+  border: 1px solid rgba(167, 223, 255, 0.28);
+  border-radius: 14px;
+  padding: 0.55rem;
+  box-shadow: inset 0 0 0 1px rgba(22, 65, 97, 0.45);
+}
+
+.crossword-grid:empty {
+  min-height: 210px;
+  place-items: center;
+}
+
+.crossword-grid:empty::before {
+  content: "Preparing puzzle...";
+  color: #97bfd8;
+  letter-spacing: 0.03em;
+}
+
+.cw-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-width: 0;
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cw-cell.entry-correct::after {
+  content: "✓";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  background: rgba(46, 229, 157, 0.95);
+  color: #06321f;
+  font-size: 0.6rem;
+  line-height: 13px;
+  text-align: center;
+  font-weight: 800;
+  z-index: 3;
+}
+
+.cw-cell.entry-fixed {
+  box-shadow: inset 0 0 0 2px rgba(255, 200, 87, 0.72);
+}
+
+.cw-cell.blocked {
+  background: rgba(3, 9, 16, 0.92);
+}
+
+.cw-number {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #a5d7f9;
+  z-index: 2;
+}
+
+.cw-input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.02);
+  color: #f5fcff;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(0.73rem, 1.3vw, 0.95rem);
+  text-transform: uppercase;
+  text-align: center;
+  padding-top: 0.35rem;
+  transition: background-color 160ms ease;
+}
+
+.cw-input:focus {
+  outline: 2px solid rgba(127, 209, 255, 0.95);
+  outline-offset: -1px;
+  background: rgba(24, 161, 255, 0.15);
+}
+
+.cw-input.is-active {
+  background: rgba(24, 161, 255, 0.18);
+}
+
+.cw-input.hinted {
+  background: rgba(255, 200, 87, 0.25);
+}
+
+.cw-input.is-wrong {
+  background: rgba(255, 99, 99, 0.22);
+}
+
+.crossword-actions {
+  margin-top: 0.75rem;
+}
+
+.crossword-clues {
+  margin-top: 0.95rem;
+  border-top: 1px solid rgba(214, 239, 255, 0.18);
+  padding-top: 0.8rem;
+  max-height: 54vh;
+  overflow: auto;
+  padding-right: 0.25rem;
+}
+
+.crossword-clues h2 {
+  margin-top: 0.65rem;
+  font-size: 1rem;
+}
+
+.clue-list {
+  margin: 0.45rem 0 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.clue-item {
+  color: var(--muted);
+}
+
+.clue-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(214, 239, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+  color: #e6f4ff;
+  font-family: "Outfit", sans-serif;
+  line-height: 1.38;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.clue-btn:hover {
+  border-color: rgba(167, 223, 255, 0.5);
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-1px);
+}
+
+.clue-btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.clue-btn.is-active {
+  border-color: rgba(46, 229, 157, 0.75);
+  background: rgba(46, 229, 157, 0.15);
+}
+
+.clue-btn span {
+  color: #acd0e8;
+  font-size: 0.84rem;
+}
+
 .report-actions {
   margin-top: 1rem;
   display: flex;
@@ -622,6 +1118,10 @@ body.presenter-mode .results-card {
     grid-template-columns: 1fr;
   }
 
+  .crossword-shell {
+    grid-template-columns: 1fr;
+  }
+
   .setup-grid {
     grid-template-columns: 1fr;
   }
@@ -636,6 +1136,29 @@ body.presenter-mode .results-card {
 }
 
 @media (max-width: 560px) {
+  .site-nav {
+    margin-top: 0.72rem;
+    padding: 0.5rem;
+  }
+
+  .nav-links {
+    gap: 0.35rem;
+  }
+
+  .nav-link {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.62rem;
+  }
+
+  .site-footer {
+    margin-bottom: 0.85rem;
+    padding: 0.72rem 0.78rem;
+  }
+
+  .site-footer p {
+    font-size: 0.85rem;
+  }
+
   .app-shell {
     padding: 0.7rem;
   }
@@ -653,4 +1176,216 @@ body.presenter-mode .results-card {
   .result-grid {
     grid-template-columns: 1fr;
   }
+
+  .crossword-grid {
+    padding: 0.35rem;
+    gap: 1px;
+  }
+
+  .crossword-clues {
+    max-height: none;
+  }
+}
+
+/* Final accessibility and Google-theme overrides */
+body {
+  color: #202124;
+  background: radial-gradient(circle at 8% 5%, rgba(66, 133, 244, 0.2) 0%, transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(52, 168, 83, 0.18) 0%, transparent 26%),
+    radial-gradient(circle at 76% 74%, rgba(251, 188, 5, 0.2) 0%, transparent 30%),
+    linear-gradient(125deg, #f8f9fa, #e9f2ff);
+}
+
+h1,
+h2,
+.results-head p,
+.bar-label,
+.bar-value,
+.review-title,
+.review-line,
+.submission-title,
+.submission-answer,
+.option span,
+.student-field {
+  color: #202124;
+}
+
+.home-copy,
+.status-text,
+.review-topic,
+.submission-time,
+#totalCount,
+.clue-item,
+.clue-btn span {
+  color: #5f6368;
+}
+
+.poll-card,
+.results-card,
+.quiz-card,
+.home-card,
+.crossword-card,
+.crossword-sidecard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.98));
+  border-color: rgba(66, 133, 244, 0.26);
+  box-shadow: 0 12px 30px rgba(26, 115, 232, 0.14);
+}
+
+.tag,
+.quiz-topbar .status-text,
+.room-chip,
+.badge-pill {
+  color: #174ea6;
+  border-color: rgba(66, 133, 244, 0.35);
+  background: linear-gradient(90deg, rgba(66, 133, 244, 0.18), rgba(66, 133, 244, 0.08));
+}
+
+.topic-card,
+.quick-stats article,
+.gamification-grid article,
+.result-grid article,
+.question-card,
+.review-item,
+.submission-item,
+.bar-track,
+.progress-track,
+.student-input,
+.option,
+.quiz-option,
+.clue-btn {
+  border-color: rgba(60, 64, 67, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.submit-btn {
+  background: linear-gradient(100deg, #4285f4, #1a73e8);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(26, 115, 232, 0.25);
+}
+
+.submit-btn:hover {
+  background: linear-gradient(100deg, #1a73e8, #1967d2);
+}
+
+.reset-btn,
+.home-btn {
+  background: rgba(66, 133, 244, 0.12);
+  color: #202124;
+}
+
+.crossword-grid {
+  background: linear-gradient(180deg, rgba(66, 133, 244, 0.22), rgba(66, 133, 244, 0.12));
+  border-color: rgba(66, 133, 244, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(66, 133, 244, 0.3), 0 8px 18px rgba(26, 115, 232, 0.16);
+}
+
+.crossword-grid:empty::before {
+  color: #5f6368;
+}
+
+.cw-cell {
+  background: #ffffff;
+  border: 1px solid rgba(66, 133, 244, 0.16);
+}
+
+.cw-cell.blocked {
+  background: #d2ddeb;
+  border-color: rgba(95, 99, 104, 0.22);
+}
+
+.cw-number {
+  color: #1967d2;
+}
+
+.cw-input {
+  background: rgba(255, 255, 255, 0.98);
+  color: #202124;
+  font-weight: 700;
+}
+
+.cw-input:focus {
+  outline-color: #1a73e8;
+  background: rgba(66, 133, 244, 0.28);
+}
+
+.cw-input.is-active {
+  background: rgba(66, 133, 244, 0.24);
+}
+
+.cw-input.hinted {
+  background: rgba(251, 188, 5, 0.28);
+}
+
+.cw-cell.entry-fixed {
+  box-shadow: inset 0 0 0 2px rgba(251, 188, 5, 0.82);
+}
+
+.cw-input.is-wrong,
+.quiz-option.is-wrong {
+  border-color: rgba(234, 67, 53, 0.55);
+  background: rgba(234, 67, 53, 0.12);
+}
+
+.quiz-option.is-correct,
+.review-correct {
+  border-color: rgba(52, 168, 83, 0.55);
+  background: rgba(52, 168, 83, 0.12);
+}
+
+.review-incorrect {
+  border-color: rgba(234, 67, 53, 0.5);
+}
+
+.review-skipped {
+  border-color: rgba(251, 188, 5, 0.58);
+}
+
+.result-message {
+  color: #1a73e8;
+}
+
+.crossword-clues,
+.final-result {
+  border-top-color: rgba(60, 64, 67, 0.22);
+}
+
+.clue-btn {
+  border-color: rgba(66, 133, 244, 0.32);
+  background: #ffffff;
+  color: #202124;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.16);
+}
+
+.clue-btn:hover {
+  border-color: rgba(26, 115, 232, 0.62);
+  background: rgba(66, 133, 244, 0.18);
+}
+
+.clue-btn.is-active {
+  border-color: rgba(52, 168, 83, 0.84);
+  background: rgba(52, 168, 83, 0.26);
+  box-shadow: 0 0 0 1px rgba(52, 168, 83, 0.36);
+}
+
+.reset-btn,
+.home-btn {
+  border: 1px solid rgba(60, 64, 67, 0.24);
+}
+
+.results-card h2,
+.crossword-clues h2,
+.badge-title {
+  color: #1967d2;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #4285f4 0%, #ea4335 35%, #fbbc05 68%, #34a853 100%);
+}
+
+.yes-bar {
+  background: linear-gradient(90deg, #1e8e3e, #34a853);
+}
+
+.maybe-bar {
+  background: linear-gradient(90deg, #f29900, #fbbc05);
 }

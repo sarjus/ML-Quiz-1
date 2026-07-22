@@ -13,6 +13,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header class="site-nav" aria-label="Primary">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav">Menu</button>
+      <nav id="primaryNav" class="nav-links">
+        <a class="nav-link" href="index.html" aria-current="page">Home</a>
+        <a class="nav-link" href="quiz.html">Module 1 Quiz</a>
+        <a class="nav-link" href="quiz-module2.html">Module 2 Quiz</a>
+        <a class="nav-link" href="crossword-module2.html">Module 2 Crossword</a>
+      </nav>
+    </header>
+
     <main class="home-shell">
       <section class="home-card">
         <p class="tag">Machine Learning Quiz</p>
@@ -76,8 +86,18 @@
         <div class="home-actions">
           <p class="tag">Take Quiz Now</p>
           <a class="home-link" href="quiz-module2.html">Start Module 2 Quiz</a>
+          <a class="home-link" href="crossword-module2.html">Start Module 2 Crossword</a>
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>
+        Copyright @ Prof. Sarju S,
+        <a href="https://techyprofessor.in/" target="_blank" rel="noopener noreferrer">https://techyprofessor.in/</a>
+      </p>
+    </footer>
+
+    <script src="nav-menu.js"></script>
   </body>
 </html>
