@@ -586,7 +586,8 @@ function buildClues() {
 }
 
 function renderGrid(board, startCellToNumber) {
-  gridElement.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  gridElement.style.gridTemplateColumns = isMobile ? `repeat(${GRID_SIZE}, 28px)` : `repeat(${GRID_SIZE}, 1fr)`;
   gridElement.innerHTML = "";
   cellMap = new Map();
   cellWrapperMap = new Map();

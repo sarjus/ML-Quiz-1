@@ -932,8 +932,15 @@ body.presenter-mode .results-card {
   margin-top: 0.8rem;
 }
 
-.crossword-grid {
+.crossword-grid-wrap {
   margin-top: 0.95rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.35rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.crossword-grid {
   display: grid;
   gap: 3px;
   background: rgba(157, 215, 253, 0.12);
@@ -1177,9 +1184,15 @@ body.presenter-mode .results-card {
     grid-template-columns: 1fr;
   }
 
+  .crossword-grid-wrap {
+    margin-inline: -0.2rem;
+    padding-inline: 0.2rem;
+  }
+
   .crossword-grid {
+    width: max-content;
     padding: 0.35rem;
-    gap: 1px;
+    gap: 2px;
   }
 
   .crossword-clues {
