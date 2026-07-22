@@ -958,7 +958,8 @@ body.presenter-mode .results-card {
   overflow-y: hidden;
   padding-bottom: 0.35rem;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
+  touch-action: auto;
+  overscroll-behavior-x: contain;
 }
 
 .crossword-grid {
