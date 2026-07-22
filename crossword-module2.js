@@ -101,6 +101,7 @@ const gridWrapElement = document.querySelector(".crossword-grid-wrap");
 const zoomInBtn = document.getElementById("zoomInBtn");
 const zoomOutBtn = document.getElementById("zoomOutBtn");
 const zoomLabel = document.getElementById("zoomLabel");
+const activeClueText = document.getElementById("activeClueText");
 const timerText = document.getElementById("timerText");
 
 const levelText = document.getElementById("levelText");
@@ -120,6 +121,7 @@ let cellWrapperMap = new Map();
 let placedEntries = [];
 let entryKeyToCells = new Map();
 let clueButtonMap = new Map();
+let entryMetaMap = new Map();
 let solutionMap = new Map();
 let usedHints = 0;
 let xp = 0;
@@ -532,6 +534,13 @@ function setSelectedEntry(entryKey) {
   if (clueButton) {
     clueButton.classList.add("is-active");
   }
+
+  if (activeClueText) {
+    const entry = entryMetaMap.get(entryKey);
+    activeClueText.textContent = entry
+      ? `${entry.number}. ${entry.direction.toUpperCase()}: ${entry.clue} (${entry.answer.length})`
+      : "Select a clue or tap a cell to view the active question here.";
+  }
 }
 
 function focusEntryStart(entryKey) {
@@ -603,6 +612,7 @@ function buildClues() {
   acrossCluesElement.innerHTML = "";
   downCluesElement.innerHTML = "";
   clueButtonMap = new Map();
+  entryMetaMap = new Map();
 
   across.forEach((entry) => {
     const item = document.createElement("li");
@@ -611,6 +621,7 @@ function buildClues() {
     const button = item.querySelector("button");
     button.addEventListener("click", () => focusEntryStart(entry.entryKey));
     clueButtonMap.set(entry.entryKey, button);
+    entryMetaMap.set(entry.entryKey, entry);
     acrossCluesElement.appendChild(item);
   });
 
@@ -621,6 +632,7 @@ function buildClues() {
     const button = item.querySelector("button");
     button.addEventListener("click", () => focusEntryStart(entry.entryKey));
     clueButtonMap.set(entry.entryKey, button);
+    entryMetaMap.set(entry.entryKey, entry);
     downCluesElement.appendChild(item);
   });
 }
@@ -831,6 +843,9 @@ function resetPuzzle() {
   hintBtn.disabled = false;
 
   feedbackText.textContent = "Puzzle reset. Fill all clues and use Final Submit to score.";
+  if (activeClueText) {
+    activeClueText.textContent = "Select a clue or tap a cell to view the active question here.";
+  }
 
   startTime = Date.now();
   timerText.textContent = "Time: 00:00";
