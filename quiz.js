@@ -1,5 +1,6 @@
 const QUIZ_LENGTH = 25;
 const XP_PER_LEVEL = 60;
+const WRONG_ANSWER_DELAY_MS = 1800;
 
 const QUESTION_BANK = [
   {
@@ -409,6 +410,7 @@ let bestStreak = 0;
 let xp = 0;
 let badges = new Set();
 let responseLog = [];
+let isTransitioning = false;
 
 function shuffle(array) {
   const copy = [...array];
@@ -498,6 +500,27 @@ function gainXp(base) {
   xp += base;
 }
 
+function highlightAnswerReview(selectedIndex, answerIndex) {
+  const optionLabels = quizForm.querySelectorAll(".quiz-option");
+  const optionInputs = quizForm.querySelectorAll('input[name="answer"]');
+
+  optionLabels.forEach((label, index) => {
+    label.classList.add("locked");
+
+    if (index === answerIndex) {
+      label.classList.add("is-correct");
+    }
+
+    if (index === selectedIndex && selectedIndex !== answerIndex) {
+      label.classList.add("is-wrong");
+    }
+  });
+
+  optionInputs.forEach((input) => {
+    input.disabled = true;
+  });
+}
+
 function renderSubmissionReview() {
   if (responseLog.length === 0) {
     submissionReview.innerHTML = '<p class="status-text">No responses were recorded.</p>';
@@ -527,7 +550,7 @@ function renderSubmissionReview() {
 }
 
 function submitAnswer() {
-  if (currentIndex >= QUIZ_LENGTH) {
+  if (currentIndex >= QUIZ_LENGTH || isTransitioning) {
     return;
   }
 
@@ -562,7 +585,9 @@ function submitAnswer() {
   } else {
     streak = 0;
     gainXp(2);
-    feedbackText.textContent = `Incorrect. Correct answer: ${current.options[current.answerIndex]}`;
+    feedbackText.textContent = `Incorrect. Correct answer is highlighted in green. Next question in ${Math.round(
+      WRONG_ANSWER_DELAY_MS / 1000
+    )}s.`;
 
     responseLog.push({
       question: current.question,
@@ -572,6 +597,23 @@ function submitAnswer() {
       feedback: "Review this concept and try again.",
       status: "incorrect",
     });
+
+    isTransitioning = true;
+    submitAnswerBtn.disabled = true;
+    skipQuestionBtn.disabled = true;
+    highlightAnswerReview(selectedIndex, current.answerIndex);
+
+    renderGamification();
+
+    setTimeout(() => {
+      currentIndex += 1;
+      renderQuestion();
+      submitAnswerBtn.disabled = false;
+      skipQuestionBtn.disabled = false;
+      isTransitioning = false;
+    }, WRONG_ANSWER_DELAY_MS);
+
+    return;
   }
 
   currentIndex += 1;
@@ -580,7 +622,7 @@ function submitAnswer() {
 }
 
 function skipQuestion() {
-  if (currentIndex >= QUIZ_LENGTH) {
+  if (currentIndex >= QUIZ_LENGTH || isTransitioning) {
     return;
   }
 
@@ -647,6 +689,7 @@ function startQuiz() {
   xp = 0;
   badges = new Set();
   responseLog = [];
+  isTransitioning = false;
 
   finalResult.hidden = true;
   submissionReview.innerHTML = "";

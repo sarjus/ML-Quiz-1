@@ -230,6 +230,20 @@ p {
   accent-color: var(--button);
 }
 
+.quiz-option.is-wrong {
+  border-color: rgba(255, 99, 99, 0.72);
+  background: rgba(255, 80, 80, 0.18);
+}
+
+.quiz-option.is-correct {
+  border-color: rgba(46, 229, 157, 0.72);
+  background: rgba(46, 229, 157, 0.2);
+}
+
+.quiz-option.locked {
+  cursor: default;
+}
+
 .gamification-card {
   align-self: start;
 }
