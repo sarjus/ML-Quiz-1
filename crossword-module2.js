@@ -97,6 +97,10 @@ const feedbackText = document.getElementById("feedbackText");
 const filledText = document.getElementById("filledText");
 const filledBar = document.getElementById("filledBar");
 const filledTrack = document.querySelector(".crossword-progress");
+const gridWrapElement = document.querySelector(".crossword-grid-wrap");
+const zoomInBtn = document.getElementById("zoomInBtn");
+const zoomOutBtn = document.getElementById("zoomOutBtn");
+const zoomLabel = document.getElementById("zoomLabel");
 const timerText = document.getElementById("timerText");
 
 const levelText = document.getElementById("levelText");
@@ -124,6 +128,7 @@ let badges = new Set();
 let startTime = Date.now();
 let timerId;
 let selectedEntryKey = null;
+let mobileCellSize = 34;
 
 function keyFor(row, col) {
   return `${row},${col}`;
@@ -385,6 +390,41 @@ function clearTimer() {
   }
 }
 
+function isCompactViewport() {
+  return window.matchMedia("(max-width: 760px)").matches;
+}
+
+function updateZoomControls() {
+  if (!zoomInBtn || !zoomOutBtn || !zoomLabel) {
+    return;
+  }
+
+  const mobileView = isCompactViewport();
+  zoomInBtn.disabled = !mobileView || mobileCellSize >= 44;
+  zoomOutBtn.disabled = !mobileView || mobileCellSize <= 26;
+  zoomLabel.textContent = mobileView ? `Zoom: ${mobileCellSize}px` : "Zoom available on mobile";
+}
+
+function applyGridScale() {
+  gridElement.style.gridTemplateColumns = isCompactViewport()
+    ? `repeat(${GRID_SIZE}, ${mobileCellSize}px)`
+    : `repeat(${GRID_SIZE}, 1fr)`;
+
+  updateZoomControls();
+}
+
+function centerCellInMobileView(cellWrapper) {
+  if (!isCompactViewport() || !gridWrapElement || !cellWrapper) {
+    return;
+  }
+
+  const targetLeft = cellWrapper.offsetLeft - gridWrapElement.clientWidth / 2 + cellWrapper.clientWidth / 2;
+  gridWrapElement.scrollTo({
+    left: Math.max(0, targetLeft),
+    behavior: "smooth",
+  });
+}
+
 function startTimer() {
   clearTimer();
   timerId = setInterval(() => {
@@ -586,8 +626,7 @@ function buildClues() {
 }
 
 function renderGrid(board, startCellToNumber) {
-  const isMobile = window.matchMedia("(max-width: 760px)").matches;
-  gridElement.style.gridTemplateColumns = isMobile ? `repeat(${GRID_SIZE}, 28px)` : `repeat(${GRID_SIZE}, 1fr)`;
+  applyGridScale();
   gridElement.innerHTML = "";
   cellMap = new Map();
   cellWrapperMap = new Map();
@@ -627,6 +666,8 @@ function renderGrid(board, startCellToNumber) {
       input.type = "text";
       input.maxLength = 1;
       input.autocomplete = "off";
+      input.inputMode = "text";
+      input.autocapitalize = "characters";
       input.spellcheck = false;
       input.className = "cw-input";
       input.setAttribute("aria-label", `Cell row ${row + 1}, column ${col + 1}`);
@@ -645,6 +686,7 @@ function renderGrid(board, startCellToNumber) {
         }
         const firstEntry = input.dataset.entries.split("|")[0];
         setSelectedEntry(firstEntry);
+        centerCellInMobileView(wrapper);
       });
 
       input.addEventListener("input", () => {
@@ -801,5 +843,23 @@ function resetPuzzle() {
 submitBtn.addEventListener("click", evaluateCrossword);
 resetBtn.addEventListener("click", resetPuzzle);
 hintBtn.addEventListener("click", useHint);
+
+if (zoomInBtn) {
+  zoomInBtn.addEventListener("click", () => {
+    mobileCellSize = Math.min(44, mobileCellSize + 2);
+    applyGridScale();
+  });
+}
+
+if (zoomOutBtn) {
+  zoomOutBtn.addEventListener("click", () => {
+    mobileCellSize = Math.max(26, mobileCellSize - 2);
+    applyGridScale();
+  });
+}
+
+window.addEventListener("resize", () => {
+  applyGridScale();
+});
 
 resetPuzzle();
